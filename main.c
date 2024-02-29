@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 int main(void){
-    printf("Don peguita");
+    printf("Hola Mundo")
     return 0;
 
 }
