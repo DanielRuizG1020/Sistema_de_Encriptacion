@@ -55,7 +55,7 @@ const int   SeedSize             = 32 + 32;*/
 
 // Function to convert a bit string into an array of bytes:
 
-unsigned char* BitsToBytes(const unsigned char *b, int length) {
+/*unsigned char* BitsToBytes(const unsigned char *b, int length) {
     // Calcular el numero de bytes requerido
     int byte_length = length / 8;
     
@@ -79,7 +79,7 @@ unsigned char* BitsToBytes(const unsigned char *b, int length) {
     }
 
     return B;
-}
+}*/
 
 //La funcion BitstoBytes es utilizada por ByteEncode 
 
@@ -179,4 +179,13 @@ void SamplePolyCBD(const unsigned char *B, unsigned int *f) {
 }
 
 
+void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B) {
+    // Inicializar el array de bytes con ceros
+    for (int i = 0; i < b_len / 8; i++) {
+        B[i] = 0;
+    }
 
+    for (int i = 0; i < b_len; i++) {
+        B[i / 8] += b[i] << (i % 8);
+    }
+}
