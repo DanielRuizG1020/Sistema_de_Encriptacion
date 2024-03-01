@@ -144,6 +144,39 @@ void sampleNTT(const unsigned char *B, unsigned int *a) {  // tener en cuenta qu
     }
 }
 
+void BytesToBits(const unsigned char *B, int B_len, unsigned int *b) {
+    for (int i = 0; i < B_len; i++) {
+        unsigned char temp = B[i];
+        for (int j = 0; j < 8; j++) {
+            b[8 * i + j] = temp % 2;
+            temp /= 2;
+        }
+    }
+}
+void SamplePolyCBD(const unsigned char *B, unsigned int *f) {
+    unsigned int b[256]; // Array de bits convertidos de los bytes de entrada
+
+    // Convertir los bytes de entrada a bits
+    BytesToBits(B, 64 * nu, b);
+
+    // Para cada coeficiente del polinomio
+    for (int i = 0; i < 256; i++) {
+        // Calcular la suma de bits para la primera mitad de la muestra
+        unsigned int x = 0;
+        for (int j = 0; j < nu; j++) {
+            x += b[2 * i * nu + j];
+        }
+
+        // Calcular la suma de bits para la segunda mitad de la muestra
+        unsigned int y = 0;
+        for (int j = 0; j < nu; j++) {
+            y += b[2 * i * nu + nu + j];
+        }
+
+        // Calcular el coeficiente del polinomio
+        f[i] = (x - y) % q;
+    }
+}
 
 
 
