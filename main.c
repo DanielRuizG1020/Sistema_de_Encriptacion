@@ -10,7 +10,9 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <stddef.h>
+#include <stdlib.h>
+#include <math.h>
+
 
 int main(void){
     printf("Hola Mundo");
@@ -21,8 +23,8 @@ int main(void){
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
+
+
 
 //Variables Globales
 const int n = 256;
@@ -216,3 +218,6 @@ void ByteDecoded(const unsigned char *B, int B_len, int d, unsigned int *F) {
         F[i] = sum;
     }
 }
+
+
+
