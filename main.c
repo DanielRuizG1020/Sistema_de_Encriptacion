@@ -189,3 +189,30 @@ void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B) {
         B[i / 8] += b[i] << (i % 8);
     }
 }
+
+
+void ByteEncoded(const unsigned int *F, int d, unsigned char *B) {
+    unsigned int b[256 * 12]; // matriz temporal para los bits
+    for (int i = 0; i < 256; i++) {
+        unsigned int a = F[i]; // a ∈ Z2d
+        for (int j = 0; j < d; j++) {
+            b[i * d + j] = a % 2; // b ∈ {0,1}256·d
+            a = (a - b[i * d + j]) / 2; // note a - B[i * d + j] is always even
+        }
+    }
+    BitsToBytes(b, 256 * d, B); // Llamada a la función BitsToBytes
+}
+
+void ByteDecoded(const unsigned char *B, int B_len, int d, unsigned int *F) {
+    unsigned int b[32 * d]; // Definir un array temporal para almacenar los bits
+    BytesToBits(B, B_len, b); // Convertir bytes en bits
+
+    // Decodificar los bits en enteros de d bits
+    for (int i = 0; i < n; i++) {
+        unsigned int sum = 0;
+        for (int j = 0; j < d; j++) {
+            sum += b[i * d + j] << j; // Sumar los bits multiplicados por 2^j
+        }
+        F[i] = sum;
+    }
+}
