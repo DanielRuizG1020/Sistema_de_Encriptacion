@@ -268,7 +268,6 @@ void NTT(const uint16_t *f, uint16_t *f_ntt) {
         f_ntt[i] = f[i];
     }
     
-    unsigned char k = 1;
     for (int len = 128; len >= 2; len /= 2) {
         for (int start = 0; start < n; start += 2 * len) {
             for (int j = start; j < start + len; j++) {
