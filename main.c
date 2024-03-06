@@ -270,7 +270,7 @@ void NTT(const uint16_t *f, uint16_t *f_ntt) {
     
     unsigned char k = 1;
     for (int len = 128; len >= 2; len /= 2) {
-        for (int start = 0; start < N; start += 2 * len) {
+        for (int start = 0; start < n; start += 2 * len) {
             for (int j = start; j < start + len; j++) {
                 uint16_t t = zetas[j]* f_ntt[j + len]; /// OJO VA CON OPERACIONES MODULARES PASO 8
                 f_ntt[j + len] = (f_ntt[j] - t); //OJO OPERACIONES MODULARES Paso 9
