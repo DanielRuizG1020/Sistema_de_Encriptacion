@@ -264,7 +264,7 @@ void NTT(const uint16_t *f, uint16_t *f_ntt) {
     uint16_t f_copy[n]; // Crear una copia del array de entrada
     
     // Inicializar la copia
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < n; i++) {
         f_ntt[i] = f[i];
     }
     
