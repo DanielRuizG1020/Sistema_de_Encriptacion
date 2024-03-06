@@ -20,12 +20,6 @@ int main(void){
 
 }
 
-
-
-
-
-
-
 //Variables Globales
 const int n = 256;
 const int q = 3329;
@@ -134,11 +128,11 @@ void sampleNTT(const unsigned char *B, unsigned int *a) {  // tener en cuenta qu
     while (j < 256) {
         unsigned int d1 = B[i] + 256 * (B[i + 1] % 16);
         unsigned int d2 = (B[i + 1] / 16) + 16 * B[i + 2];
-        if (d1 < 3329) {
+        if (d1 < q) {
             a[j] = d1; // a es un array de 256 que cada elemento es maximo q 
             j++;
         }
-        if (d2 < 3329 && j < 256) {
+        if (d2 < q && j < 256) {
             a[j] = d2;
             j++;
         }
