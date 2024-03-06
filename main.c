@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
 
 
 int main(void){
@@ -149,7 +150,7 @@ void BytesToBits(const unsigned char *B, int B_len, unsigned int *b) {
         }
     }
 }
-void SamplePolyCBD(const unsigned char *B, unsigned int *f) {
+void SamplePolyCBD(const unsigned char *B, unsigned int *f) {          ///CORREGIR
     unsigned int b[256]; // Array de bits convertidos de los bytes de entrada
 
     // Convertir los bytes de entrada a bits
@@ -170,7 +171,7 @@ void SamplePolyCBD(const unsigned char *B, unsigned int *f) {
         }
 
         // Calcular el coeficiente del polinomio
-        f[i] = (x - y) % q;
+        f[i] = (x - y) % q;    //pendiente de revision : aritmetica modular
     }
 }
 
@@ -214,4 +215,67 @@ void ByteDecoded(const unsigned char *B, int B_len, int d, unsigned int *F) {
 }
 
 
+//Operaciones Modulares.
+// fieldElement is an integer modulo q, an element of ℤ_q. It is always reduced.
+typedef uint16_t fieldElement;
 
+bool fieldCheckReduced(fieldElement a) {
+    return a < q;
+}
+
+fieldElement fieldReduceOnce(uint16_t a) {
+    int16_t x = a - q;
+    // Si x se desborda hacia abajo, entonces x >= 2^16 - q > 2^15, por lo que se establece el bit superior.
+    x += (x >> 15) * q;
+    return x;
+}
+
+fieldElement fieldAdd(fieldElement a, fieldElement b) {
+    uint32_t x = (uint32_t)a + b;
+    return fieldReduceOnce(x);
+}
+
+fieldElement fieldSub(fieldElement a, fieldElement b) {
+    uint32_t x = (uint32_t)a - b + q;
+    return fieldReduceOnce(x);
+}
+
+const uint32_t barrettMultiplier = 5039; // 4^12 / q
+const uint32_t barrettShift = 24;        // log₂(4^12)
+
+fieldElement fieldReduce(uint32_t a) {
+    uint32_t quotient = (uint64_t)a * barrettMultiplier >> barrettShift;
+    return fieldReduceOnce(a - quotient * q);
+}
+
+fieldElement fieldMul(fieldElement a, fieldElement b) {
+    uint32_t x = (uint32_t)a * b;
+    return fieldReduce(x);
+}
+
+///
+
+// zetas are the values ζ^BitRev7(k) mod q for each index k.
+const uint16_t zetas[128]= {1, 1729, 2580, 3289, 2642, 630, 1897, 848, 1062, 1919, 193, 797, 2786, 3260, 569, 1746, 296, 2447, 1339, 1476, 3046, 56, 2240, 1333, 1426, 2094, 535, 2882, 2393, 2879, 1974, 821, 289, 331, 3253, 1756, 1197, 2304, 2277, 2055, 650, 1977, 2513, 632, 2865, 33, 1320, 1915, 2319, 1435, 807, 452, 1438, 2868, 1534, 2402, 2647, 2617, 1481, 648, 2474, 3110, 1227, 910, 17, 2761, 583, 2649, 1637, 723, 2288, 1100, 1409, 2662, 3281, 233, 756, 2156, 3015, 3050, 1703, 1651, 2789, 1789, 1847, 952, 1461, 2687, 939, 2308, 2437, 2388, 733, 2337, 268, 641, 1584, 2298, 2037, 3220, 375, 2549, 2090, 1645, 1063, 319, 2773, 757, 2099, 561, 2466, 2594, 2804, 1092, 403, 1026, 1143, 2150, 2775, 886, 1722, 1212, 1874, 1029, 2110, 2935, 885, 2154};
+
+
+
+void NTT(const uint16_t *f, uint16_t *f_ntt) {
+    uint16_t f_copy[n]; // Crear una copia del array de entrada
+    
+    // Inicializar la copia
+    for (int i = 0; i < N; i++) {
+        f_ntt[i] = f[i];
+    }
+    
+    unsigned char k = 1;
+    for (int len = 128; len >= 2; len /= 2) {
+        for (int start = 0; start < N; start += 2 * len) {
+            for (int j = start; j < start + len; j++) {
+                uint16_t t = zetas[j]* f_ntt[j + len]; /// OJO VA CON OPERACIONES MODULARES PASO 8
+                f_ntt[j + len] = (f_ntt[j] - t); //OJO OPERACIONES MODULARES Paso 9
+                f_ntt[j] = (f_copy[j] + t); // OJO OPERACIONES MODULARES Paso 10
+            }
+        }
+    }
+}
