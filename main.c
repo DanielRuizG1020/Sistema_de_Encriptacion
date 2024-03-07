@@ -120,9 +120,8 @@ void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B) {
         B[i] = 0;
     }
 
-    // Convertir los bits en bytes
     for (int i = 0; i < b_len; i++) {
-        B[i / 8] += b[i] << (7 - (i % 8)); // Corregir el orden de los bits
+        B[i / 8] += b[i] << (i % 8);
     }
 }
 ///////////////////////////
