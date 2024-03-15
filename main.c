@@ -19,18 +19,103 @@
 #define N 256
 #define d 12
 
+/**
+ * Convierte un array de bits en un array de bytes.
+ * @param b Array de enteros sin signo que representa los bits.
+ * @param b_len Longitud del array de bits.
+ * @param B Puntero a un array de caracteres sin signo donde se almacenarán los bytes resultantes.
+ */
 void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B);
+
+/**
+ * Convierte un array de bytes en un array de bits.
+ * @param B Array de caracteres sin signo que representa los bytes.
+ * @param B_len Longitud del array de bytes.
+ * @param b Puntero a un array de enteros sin signo donde se almacenarán los bits resultantes.
+ */
 void BytesToBits(const unsigned char *B, int B_len, unsigned int *b);
+
+/**
+ * Serializa un arreglo de enteros en un arreglo de bytes.
+ * @param F Array de enteros a serializar.
+ * @param B Puntero a un array de caracteres sin signo donde se almacenarán los bytes resultantes.
+ */
 void ByteEncoded(const unsigned int *F, unsigned char *B);
-void ByteDecoded(const unsigned char *B,unsigned int *F);
+
+/**
+ * Deserializa un arreglo de bytes en un arreglo de enteros.
+ * @param B Array de caracteres sin signo que representa los bytes serializados.
+ * @param F Puntero a un array de enteros donde se almacenarán los enteros resultantes.
+ */
+void ByteDecoded(const unsigned char *B, unsigned int *F);
+
+/**
+ * Comprime un entero de 16 bits en otro entero de 16 bits.
+ * @param x Entero de 16 bits a comprimir.
+ * @return Entero de 16 bits comprimido.
+ */
 uint16_t Compress(uint16_t x);
+
+/**
+ * Descomprime un entero de 16 bits previamente comprimido.
+ * @param y Entero de 16 bits comprimido.
+ * @return Entero de 16 bits descomprimido.
+ */
 uint16_t Decompress(uint16_t y);
+
+/**
+ * Convierte una secuencia de bytes en un polinomio en el dominio de la Transformada de Fourier Numérica (NTT).
+ * @param B Secuencia de bytes.
+ * @param a Puntero al array donde se almacenará el polinomio en el dominio NTT.
+ */
 void sampleNTT(const unsigned char *B, unsigned int *a);
+
+/**
+ * Muestrea un polinomio discreto en el espacio de coeficientes de Bernoulli con distribución uniforme.
+ * @param B Secuencia de bytes.
+ * @param f Puntero al array donde se almacenará el polinomio muestreado.
+ */
 void SamplePolyCBD(const unsigned char *B, unsigned int *f);
+
+/**
+ * Realiza la Transformada de Fourier Numérica (NTT) en un polinomio dado.
+ * @param f Puntero al array que representa el polinomio en el anillo Rq.
+ */
 void NTT(uint16_t *f);
+
+/**
+ * Realiza la transformada inversa de la Transformada de Fourier Numérica (NTT) en un polinomio dado.
+ * @param f_ntt Puntero al array que representa el polinomio en el anillo Rq.
+ */
 void inverseNTT(uint16_t *f_ntt);
+
+/**
+ * Realiza una multiplicación específica de los coeficientes de los polinomios en el caso base para la operación de multiplicación de polinomios en el anillo Rq.
+ * @param a0 Coeficiente del primer polinomio.
+ * @param a1 Coeficiente del primer polinomio.
+ * @param b0 Coeficiente del segundo polinomio.
+ * @param b1 Coeficiente del segundo polinomio.
+ * @param gamma Parámetro de compresión.
+ * @return Resultado de la multiplicación.
+ */
 uint16_t BaseCaseMultiplyc0(uint16_t a0, uint16_t a1, uint16_t b0, uint16_t b1, uint16_t gamma);
+
+/**
+ * Realiza otra multiplicación específica de los coeficientes de los polinomios en el caso base para la operación de multiplicación de polinomios en el anillo Rq.
+ * @param a0 Coeficiente del primer polinomio.
+ * @param a1 Coeficiente del primer polinomio.
+ * @param b0 Coeficiente del segundo polinomio.
+ * @param b1 Coeficiente del segundo polinomio.
+ * @return Resultado de la multiplicación.
+ */
 uint16_t BaseCaseMultiplyc1(uint16_t a0, uint16_t a1, uint16_t b0, uint16_t b1);
+
+/**
+ * Multiplica dos polinomios en el dominio de la Transformada de Fourier Numérica (NTT).
+ * @param f_ntt Puntero al array que representa el primer polinomio en el dominio NTT.
+ * @param g_ntt Puntero al array que representa el segundo polinomio en el dominio NTT.
+ * @param h_ntt Puntero al array donde se almacenará el resultado de la multiplicación.
+ */
 void MultiplyNTTs(uint16_t *f_ntt, uint16_t *g_ntt, uint16_t *h_ntt);
 
 
