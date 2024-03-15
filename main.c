@@ -19,6 +19,22 @@
 #define N 256
 #define d 12
 
+void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B);
+void BytesToBits(const unsigned char *B, int B_len, unsigned int *b);
+void ByteEncoded(const unsigned int *F, unsigned char *B);
+void ByteDecoded(const unsigned char *B,unsigned int *F);
+uint16_t Compress(uint16_t x);
+uint16_t Decompress(uint16_t y);
+void sampleNTT(const unsigned char *B, unsigned int *a);
+void SamplePolyCBD(const unsigned char *B, unsigned int *f);
+void NTT(uint16_t *f);
+void inverseNTT(uint16_t *f_ntt);
+uint16_t BaseCaseMultiplyc0(uint16_t a0, uint16_t a1, uint16_t b0, uint16_t b1, uint16_t gamma);
+uint16_t BaseCaseMultiplyc1(uint16_t a0, uint16_t a1, uint16_t b0, uint16_t b1);
+void MultiplyNTTs(uint16_t *f_ntt, uint16_t *g_ntt, uint16_t *h_ntt);
+
+
+
 
 
 
@@ -53,25 +69,6 @@ void BytesToBits(const unsigned char *B, int B_len, unsigned int *b) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
-//SAMPLENTT 
-void sampleNTT(const unsigned char *B, unsigned int *a) {
-    int i = 0;
-    int j = 0;
-    while (j < 256) {
-        unsigned int d1 = B[i] + 256 * (B[i + 1] % 16);
-        unsigned int d2 = (B[i + 1] / 16) + 16 * B[i + 2];
-        if (d1 < q) {
-            a[j] = d1;
-            j++;
-        }
-        if (d2 < q && j < 256) {
-            a[j] = d2;
-            j++;
-        }
-        i += 3;
-    }
-}
-
 
 ////////////////////////////////////////////////////////////////////////
 
