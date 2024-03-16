@@ -36,14 +36,14 @@ void BitsToBytes(const unsigned int *b, int b_len, unsigned char *B);
 void BytesToBits(const unsigned char *B, int B_len, unsigned int *b);
 
 /**
- * Serializa un arreglo de enteros en un arreglo de bytes.
+ * Serializa un arreglo de enteros de "d" bits en un arreglo de 32 * d bytes..
  * @param F Array de enteros a serializar.
  * @param B Puntero a un array de caracteres sin signo donde se almacenarán los bytes resultantes.
  */
 void ByteEncoded(const unsigned int *F, unsigned char *B);
 
 /**
- * Deserializa un arreglo de bytes en un arreglo de enteros.
+ * Realiza la operación de deserialización correspondiente, convirtiendo un arreglo de 32 * d bytes en un arreglo de enteros de "d" bits.
  * @param B Array de caracteres sin signo que representa los bytes serializados.
  * @param F Puntero a un array de enteros donde se almacenarán los enteros resultantes.
  */
@@ -71,20 +71,20 @@ uint16_t Decompress(uint16_t y);
 void sampleNTT(const unsigned char *B, unsigned int *a);
 
 /**
- * Muestrea un polinomio discreto en el espacio de coeficientes de Bernoulli con distribución uniforme.
+ * Esta función implementa un esquema de muestreo conocido como "Centered Binomial Distribution" (CBD).
  * @param B Secuencia de bytes.
  * @param f Puntero al array donde se almacenará el polinomio muestreado.
  */
 void SamplePolyCBD(const unsigned char *B, unsigned int *f);
 
 /**
- * Realiza la Transformada de Fourier Numérica (NTT) en un polinomio dado.
+ * Realiza la Transformada NTT en un polinomio dado.
  * @param f Puntero al array que representa el polinomio en el anillo Rq.
  */
 void NTT(uint16_t *f);
 
 /**
- * Realiza la transformada inversa de la Transformada de Fourier Numérica (NTT) en un polinomio dado.
+ * Realiza la transformada inversa de la Transformada  NTT en un polinomio dado.
  * @param f_ntt Puntero al array que representa el polinomio en el anillo Rq.
  */
 void inverseNTT(uint16_t *f_ntt);
